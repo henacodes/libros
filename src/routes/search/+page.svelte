@@ -27,7 +27,7 @@
 	const handleDownload = async (book: Book) => {
 		try {
 			addDownload(book);
-			const res = await axios.post('http://localhost:3000/books/download', book, {
+			const res = await axios.post('/api/download', book, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
 					// this function gets called everytime the file gets updated with a new stream
