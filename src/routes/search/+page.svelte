@@ -1,9 +1,14 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import type Book from '$lib/types/Book.js';
+	import type Book from '$lib/types/Book';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { downloadBlob } from '$lib/utils.js';
+	import { downloadBlob } from '$lib/utils';
+	import * as Dialog from '$lib/components/ui/dialog';
+
 	import axios from 'axios';
+	import DownloadProgress from '$lib/components/DownloadProgress.svelte';
+	import DialogContent from '$lib/components/ui/dialog/dialog-content.svelte';
+	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	export let data;
 
 	let searchResults: Book[];
@@ -17,18 +22,21 @@
 	const handleDownload = async (book: Book) => {
 		try {
 			let options = {};
-			const res = axios.post('http://localhost:3000/books/download', book, {
+
+			addDownload(book);
+			const res = await axios.post('http://localhost:3000/books/download', book, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: ProgressEvent) => {
 					const total = progressEvent.total;
 					const loaded = progressEvent.loaded;
 
+					updateDownloadStatus(book, loaded, total);
 					console.log('loaded', loaded, 'total:', progressEvent);
 				}
 			});
 
 			if (res) {
-				let blob = await res.blob();
+				let blob = res.data;
 				downloadBlob(blob, book.title, book.extension);
 			}
 		} catch (error) {
@@ -60,7 +68,14 @@
 					<Table.Cell>{book.year}</Table.Cell>
 					<Table.Cell class="text-right">{book.size}</Table.Cell>
 					<Table.Cell class="text-right">{book.extension}</Table.Cell>
-					<Table.Cell><Button on:click={() => handleDownload(book)}>Download</Button></Table.Cell>
+					<Table.Cell>
+						<Dialog.Root>
+							<Dialog.Trigger on:click={() => handleDownload(book)}>Download</Dialog.Trigger>
+							<Dialog.Content>
+								<DownloadProgress />
+							</Dialog.Content>
+						</Dialog.Root>
+					</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>

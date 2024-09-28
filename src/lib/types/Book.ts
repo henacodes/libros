@@ -14,4 +14,5 @@ export default interface Book {
 export interface BookDownload extends Book {
 	loaded: number;
 	total: number;
+	done?: boolean;
 }
