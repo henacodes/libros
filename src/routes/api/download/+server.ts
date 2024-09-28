@@ -2,10 +2,6 @@ import type { Entry } from '$lib/libgen/models/Entry.js';
 import downloadLink from '$lib/libgen/outlets/download';
 import { json } from '@sveltejs/kit';
 
-import { Readable } from 'stream';
-import fs from 'fs';
-import path from 'path';
-
 // src/routes/api/download.js
 
 export async function POST({ request }) {
