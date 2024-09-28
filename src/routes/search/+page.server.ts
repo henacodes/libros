@@ -12,6 +12,7 @@ export const load = async ({ url }) => {
 	const data = await response.json();
 
 	return {
+		query,
 		searchResults: data
 	};
 };
