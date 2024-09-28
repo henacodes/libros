@@ -6,10 +6,9 @@
 	import { toggleLoading } from '../../store/globalStore';
 	import * as Dialog from '$lib/components/ui/dialog';
 
-	import axios from 'axios';
+	import axios, { type AxiosProgressEvent } from 'axios';
 	import DownloadProgress from '$lib/components/DownloadProgress.svelte';
-	import DialogContent from '$lib/components/ui/dialog/dialog-content.svelte';
-	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
+	import { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -30,12 +29,12 @@
 			addDownload(book);
 			const res = await axios.post('http://localhost:3000/books/download', book, {
 				responseType: 'blob', // Set response type to blob
-				onDownloadProgress: (progressEvent: ProgressEvent) => {
+				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
 					// this function gets called everytime the file gets updated with a new stream
 					const total = progressEvent.total;
 					const loaded = progressEvent.loaded;
 
-					updateDownloadStatus(book, loaded, total);
+					updateDownloadStatus(book, loaded, total || 0);
 				}
 			});
 

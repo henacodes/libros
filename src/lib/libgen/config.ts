@@ -1,0 +1,22 @@
+const config = {
+  latest_version: "2.0.3",
+  mirrors: ["https://libgen.is/", "https://libgen.st/", "http://libgen.rs/"],
+  searchReqPattern:
+    "{mirror}search.php?&req={query}&page={pageNumber}&res={pageSize}&sort_mode=ASC",
+  searchByMD5Pattern: "{mirror}search.php?req={md5}&column=md5",
+  MD5ReqPattern: "{mirror}json.php?ids={id}&fields=md5",
+  columnFilterQueryParamKey: "column",
+  columnFilterQueryParamValues: {
+    Title: "title",
+    "Author(s)": "author",
+    Series: "series",
+    Publisher: "publisher",
+    Year: "year",
+    ISBN: "identifier",
+    Language: "language",
+    MD5: "md5",
+    Tags: "tags",
+  },
+};
+
+export default config;
