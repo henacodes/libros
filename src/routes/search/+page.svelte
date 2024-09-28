@@ -12,6 +12,7 @@
 	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 	export let data;
 
 	let searchResults: Book[];
@@ -40,6 +41,7 @@
 
 			if (res) {
 				let blob = res.data;
+				toast('Book downloaded successfully :)');
 				downloadBlob(blob, book.title, book.extension);
 			}
 		} catch (error) {
@@ -48,7 +50,7 @@
 	};
 
 	onMount(() => {
-		toggleLoading();
+		toggleLoading(false);
 	});
 </script>
 
