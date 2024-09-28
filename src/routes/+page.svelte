@@ -16,7 +16,7 @@
 	};
 </script>
 
-<div class=" bg-primary-white flex h-[100vh] w-full justify-center">
+<div class="  flex h-[100vh] w-full justify-center">
 	<form class="m-2 flex w-full max-w-sm items-center space-x-2" on:submit={handleSubmit}>
 		<Input bind:value={searchQuery} type="search" placeholder="Search books" />
 		<Button type="submit">Search</Button>

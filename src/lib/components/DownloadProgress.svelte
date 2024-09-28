@@ -22,6 +22,11 @@
 				<Badge>Finished</Badge>
 			{:else}
 				<Progress value={(download.loaded / download.total) * 100} max={100} class="w-full " />
+				<p>
+					{Math.round((download.loaded / (1024 * 1024) + Number.EPSILON) * 100) / 100} mb / {Math.round(
+						(download.total / (1024 * 1024) + Number.EPSILON) * 100
+					) / 100} mb
+				</p>
 			{/if}
 		</div>
 	{/each}
