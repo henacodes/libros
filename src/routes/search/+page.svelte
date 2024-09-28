@@ -20,7 +20,6 @@
 		if (data) {
 			searchResults = data.searchResults;
 			query = data.query || '';
-			console.log(searchResults);
 		}
 	}
 

@@ -10,7 +10,6 @@
 	let searchQuery = '';
 	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
-		console.log('hlkjl');
 		toggleLoading();
 		goto(`/search?query=${searchQuery}`, { replaceState: true });
 	};

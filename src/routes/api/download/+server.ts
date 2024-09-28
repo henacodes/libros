@@ -11,8 +11,6 @@ import path from 'path';
 export async function POST({ request }) {
 	const entry = await request.json(); // Assuming the entry is sent as JSON
 
-	console.log('entry ', entry);
-
 	if (!entry) {
 		return json({ error: 'Bad request' }, { status: 400 });
 	}
@@ -20,12 +18,10 @@ export async function POST({ request }) {
 	const { downloadUrl, error } = await downloadLink(entry); // Implement this function based on your logic
 
 	if (!downloadUrl) {
-		console.log('error', error);
 		return json(error, { status: 400 });
 	}
 
 	try {
-		console.log('downloadUrl', downloadUrl);
 		const response = await fetch(downloadUrl);
 
 		// Check if the request was successful
