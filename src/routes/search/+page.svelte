@@ -12,6 +12,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
+	import { API_SERVER_URL } from '$lib/constants';
 	export let data;
 
 	let searchResults: Book[];
@@ -26,7 +27,7 @@
 	const handleDownload = async (book: Book) => {
 		try {
 			addDownload(book);
-			const res = await axios.post('/api/download', book, {
+			const res = await axios.post(`${API_SERVER_URL}/books/download`, book, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
 					// this function gets called everytime the file gets updated with a new stream
