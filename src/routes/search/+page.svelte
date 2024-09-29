@@ -1,10 +1,7 @@
 <script lang="ts">
-	import * as Table from '$lib/components/ui/table';
 	import type Book from '$lib/types/Book';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { downloadBlob } from '$lib/utils';
+
 	import { toggleLoading } from '../../store/globalStore';
-	import * as Dialog from '$lib/components/ui/dialog';
 
 	import axios, { type AxiosProgressEvent } from 'axios';
 	import DownloadProgress from '$lib/components/DownloadProgress.svelte';
@@ -13,6 +10,7 @@
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import { API_SERVER_URL } from '$lib/constants';
+	import BookUI from '$lib/components/BookUI.svelte';
 	export let data;
 
 	let searchResults: Book[];
@@ -24,30 +22,6 @@
 		}
 	}
 
-	const handleDownload = async (book: Book) => {
-		try {
-			addDownload(book);
-			const res = await axios.post(`${API_SERVER_URL}/books/download`, book, {
-				responseType: 'blob', // Set response type to blob
-				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
-					// this function gets called everytime the file gets updated with a new stream
-					const total = progressEvent.total;
-					const loaded = progressEvent.loaded;
-
-					updateDownloadStatus(book, loaded, total || 0);
-				}
-			});
-
-			if (res) {
-				let blob = res.data;
-				toast('Book downloaded successfully :)');
-				downloadBlob(blob, book.title, book.extension);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	onMount(() => {
 		toggleLoading(false);
 	});
@@ -58,7 +32,12 @@
 		<span class=" mx-4">Search results for</span>
 		<Badge>{query}</Badge>
 	</p>
-	<Table.Root>
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+		{#each searchResults as book, i (i)}
+			<BookUI {book} />
+		{/each}
+	</div>
+	<!-- <Table.Root>
 		<Table.Caption>A list of recent books.</Table.Caption>
 		<Table.Header>
 			<Table.Row>
@@ -79,17 +58,10 @@
 					<Table.Cell class="text-right">{book.size}</Table.Cell>
 					<Table.Cell class="text-right">{book.extension}</Table.Cell>
 					<Table.Cell>
-						<Dialog.Root>
-							<Dialog.Trigger on:click={() => handleDownload(book)}
-								><Button variant="secondary">Download</Button></Dialog.Trigger
-							>
-							<Dialog.Content>
-								<DownloadProgress />
-							</Dialog.Content>
-						</Dialog.Root>
+						
 					</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>
-	</Table.Root>
+	</Table.Root> -->
 </div>

@@ -9,6 +9,7 @@ export default interface Book {
 	size: string;
 	extension: string;
 	mirror: string;
+	thumbUrl?: string;
 }
 
 export interface BookDownload extends Book {
