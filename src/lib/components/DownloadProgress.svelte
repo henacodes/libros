@@ -6,9 +6,13 @@
 </script>
 
 <div class=" m-4">
-	<Badge class="text-primary bg-yellow-500  "
-		>Dont close this browser tab until downloads finish</Badge
-	>
+	{#if $downloadStore.downloads.length < 1}
+		<p>You dont have any downloads so far in this session</p>
+	{:else}
+		<Badge class="text-primary bg-yellow-500  "
+			>Dont close this browser tab until downloads finish</Badge
+		>
+	{/if}
 	{#each $downloadStore.downloads as download}
 		<div>
 			<p class=" my-2 font-bold">{download.title.replace(/\d{5,}/g, '')}</p>
