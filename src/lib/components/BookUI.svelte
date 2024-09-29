@@ -82,16 +82,17 @@
 			<p
 				class="text-blue-gray-900 block font-sans text-base font-medium leading-relaxed antialiased"
 			>
-				{book.title}
-			</p>
-			<p
-				class="text-blue-gray-900 block font-sans text-base font-medium leading-relaxed antialiased"
-			>
-				{book.authors}
+				{book.title.replace(/\d{5,}/g, '')}
 			</p>
 		</div>
 
 		<div>
+			<p
+				class=" text-blue-gray-900 my-1 block font-sans text-base font-medium leading-relaxed antialiased"
+			>
+				<span class=" font-bold">Authors :</span>
+				<small>{book.authors}</small>
+			</p>
 			<p class="flex items-center">
 				<CalendarDays size={20} /> <span class=" mx-1">{book.year}</span>
 			</p>
