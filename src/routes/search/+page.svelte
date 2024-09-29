@@ -27,7 +27,7 @@
 	});
 </script>
 
-<div class=" w-full p-5 px-[5rem]">
+<div class=" w-full p-5 md:px-[5rem]">
 	<p class=" my-3 flex items-center text-lg">
 		<span class=" mx-4">Search results for</span>
 		<Badge>{query}</Badge>
@@ -37,31 +37,4 @@
 			<BookUI {book} />
 		{/each}
 	</div>
-	<!-- <Table.Root>
-		<Table.Caption>A list of recent books.</Table.Caption>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head>Authors</Table.Head>
-				<Table.Head>Title</Table.Head>
-				<Table.Head>Year</Table.Head>
-				<Table.Head class="text-right">Size</Table.Head>
-				<Table.Head class="text-right">Extension</Table.Head>
-				<Table.Head></Table.Head>
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each searchResults as book, i (i)}
-				<Table.Row>
-					<Table.Cell>{book.authors}</Table.Cell>
-					<Table.Cell>{book.title.replace(/\d{5,}/g, '')}</Table.Cell>
-					<Table.Cell>{book.year}</Table.Cell>
-					<Table.Cell class="text-right">{book.size}</Table.Cell>
-					<Table.Cell class="text-right">{book.extension}</Table.Cell>
-					<Table.Cell>
-						
-					</Table.Cell>
-				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root> -->
 </div>
