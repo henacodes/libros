@@ -8,7 +8,9 @@ export const load = async ({ url, fetch }) => {
 		return new Response(JSON.stringify({ error: 'Query parameter is missing' }), { status: 400 });
 	}
 
-	const response = await fetch(`${API_SERVER_URL}/books/search?q=${query}&filterBy=${filterBy}`);
+	const response = await fetch(
+		`${API_SERVER_URL}/books/search?query=${query}&filterBy=${filterBy}`
+	);
 
 	const data = await response.json();
 
