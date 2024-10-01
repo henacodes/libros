@@ -37,8 +37,10 @@
 	};
 </script>
 
-<div class="relative flex flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-	<div class="relative mx-4 mt-4 bg-white text-gray-700">
+<div
+	class="  bg-background relative flex flex-col rounded-xl bg-clip-border text-gray-700 shadow-lg outline outline-1"
+>
+	<div class="relative mx-4 mt-4 text-gray-700">
 		<!-- 	<img
 			src={`${API_SERVER_URL}/proxy?url=${thumbUrl || defaultImage}`}
 			alt="card-image"
@@ -52,18 +54,14 @@
 	</div>
 	<div class="  p-6 md:h-52">
 		<div class="mb-2 flex items-center justify-between">
-			<p
-				class="text-blue-gray-900 block font-sans text-base font-medium leading-relaxed antialiased"
-			>
+			<p class=" text-primary block font-sans text-base font-bold leading-relaxed antialiased">
 				{book.title.replace(/\d{5,}/g, '').slice(0, 100)}
 				{book.title.replace(/\d{5,}/g, '').length > 100 ? '....' : ''}
 			</p>
 		</div>
 
 		<div>
-			<p
-				class=" text-blue-gray-900 my-1 block font-sans text-base font-medium leading-relaxed antialiased"
-			>
+			<p class="  text-slate-500">
 				<span class=" font-bold">Authors :</span>
 
 				{#if book.authors.length}

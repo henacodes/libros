@@ -11,7 +11,6 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Pagination from '$lib/components/ui/pagination';
-	import { Skeleton } from '$lib/components/ui/skeleton';
 
 	// custom components
 	import SearchBar from '$lib/components/SearchBar.svelte';
@@ -25,6 +24,7 @@
 	import downloadStore from '$store/downloadStore';
 	import globalStore, { toggleLoading } from '../../store/globalStore';
 	import BookSkeleton from '$lib/components/BookSkeleton.svelte';
+	import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
 
 	export let data;
 
@@ -64,11 +64,14 @@
 
 <div class=" w-full p-5 lg:px-[5rem]">
 	<div class=" flex items-center justify-between">
-		<a href="/"
-			><Button variant="outline" size="icon">
-				<ChevronLeft class="h-4 w-4" />
-			</Button></a
-		>
+		<div class="flex items-center">
+			<a href="/"
+				><Button variant="outline" size="icon">
+					<ChevronLeft class="h-4 w-4" />
+				</Button></a
+			>
+			<ThemeSwitch className="mx-3" />
+		</div>
 
 		<p class=" my-3 flex items-center text-lg">
 			<span class=" mx-4">Search results for</span>
@@ -83,43 +86,55 @@
 		{#each searchResults as book, i (i)}
 			<BookUI {book} />
 		{/each}
+
 		{#if $globalStore.loading && searchResults.length < 1}
 			<BookSkeleton />
 			<BookSkeleton />
 			<BookSkeleton />
 			<BookSkeleton />
-
 			<BookSkeleton />
 			<BookSkeleton />
 		{/if}
 	</div>
-	<Pagination.Root class="my-5" count={totalPages * 25} perPage={25} let:pages let:currentPage>
-		<Pagination.Content>
-			<Pagination.Item>
-				<Pagination.PrevButton />
-			</Pagination.Item>
-			{#each pages as page (page.key)}
-				{#if page.type === 'ellipsis'}
-					<Pagination.Item>
-						<Pagination.Ellipsis />
-					</Pagination.Item>
-				{:else}
-					<Pagination.Item isVisible={currentPage == page.value}>
-						<Pagination.Link
-							on:click={() => preceedToPage(page.value)}
-							{page}
-							isActive={currentPage == page.value}
-						>
-							{page.value}
-						</Pagination.Link>
-					</Pagination.Item>
-				{/if}
-			{/each}
-			<Pagination.Item>
-				<Pagination.NextButton />
-			</Pagination.Item>
-		</Pagination.Content>
-	</Pagination.Root>
+	<div class=" ">
+		<Pagination.Root
+			class="my-5    "
+			count={totalPages * 25}
+			perPage={25}
+			let:pages
+			let:currentPage
+		>
+			<Pagination.Content class="flex flex-col items-center   sm:flex-row">
+				<Pagination.Item>
+					{#if currentPage}
+						<Pagination.PrevButton on:click={() => preceedToPage(currentPage - 1)} />
+					{/if}
+				</Pagination.Item>
+				{#each pages as page (page.key)}
+					{#if page.type === 'ellipsis'}
+						<Pagination.Item>
+							<Pagination.Ellipsis />
+						</Pagination.Item>
+					{:else}
+						<Pagination.Item isVisible={currentPage == page.value}>
+							<Pagination.Link
+								on:click={() => preceedToPage(page.value)}
+								{page}
+								isActive={currentPage == page.value}
+							>
+								{page.value}
+							</Pagination.Link>
+						</Pagination.Item>
+					{/if}
+				{/each}
+				<Pagination.Item>
+					{#if currentPage}
+						<Pagination.NextButton on:click={() => preceedToPage(currentPage + 1)} />
+					{/if}
+				</Pagination.Item>
+			</Pagination.Content>
+		</Pagination.Root>
+	</div>
 </div>
 
 <Dialog.Root>
