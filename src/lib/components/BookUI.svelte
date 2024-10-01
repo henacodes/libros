@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type Book from '$lib/types/Book';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 
 	import Button from './ui/button/button.svelte';
 	import { CalendarDays } from 'lucide-svelte';
@@ -58,7 +56,7 @@
 				class="text-blue-gray-900 block font-sans text-base font-medium leading-relaxed antialiased"
 			>
 				{book.title.replace(/\d{5,}/g, '').slice(0, 100)}
-				{book.title.replace(/\d{5,}/g, '').length > 100 && '....'}
+				{book.title.replace(/\d{5,}/g, '').length > 100 ? '....' : ''}
 			</p>
 		</div>
 
@@ -75,7 +73,7 @@
 							: book.authors}</small
 					>
 				{:else}
-					<small>{book.authors.length || NOT_AVAILABLE}</small>
+					<small>{book.authors.length && NOT_AVAILABLE}</small>
 				{/if}
 			</p>
 			<p class="flex items-center">

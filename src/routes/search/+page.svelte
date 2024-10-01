@@ -11,6 +11,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Pagination from '$lib/components/ui/pagination';
+	import { Skeleton } from '$lib/components/ui/skeleton';
 
 	// custom components
 	import SearchBar from '$lib/components/SearchBar.svelte';
@@ -23,6 +24,7 @@
 	// stores
 	import downloadStore from '$store/downloadStore';
 	import globalStore, { toggleLoading } from '../../store/globalStore';
+	import BookSkeleton from '$lib/components/BookSkeleton.svelte';
 
 	export let data;
 
@@ -74,14 +76,22 @@
 		</p>
 	</div>
 	<SearchBar />
-
 	{#if searchResults.length == 0 && !$globalStore.loading}
 		<p class=" m-4 text-2xl">Looks like we got no books for this search</p>
-	{/if}
+	{:else if searchResults.length == 0}{/if}
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
 		{#each searchResults as book, i (i)}
 			<BookUI {book} />
 		{/each}
+		{#if $globalStore.loading && searchResults.length < 1}
+			<BookSkeleton />
+			<BookSkeleton />
+			<BookSkeleton />
+			<BookSkeleton />
+
+			<BookSkeleton />
+			<BookSkeleton />
+		{/if}
 	</div>
 	<Pagination.Root class="my-5" count={totalPages * 25} perPage={25} let:pages let:currentPage>
 		<Pagination.Content>
