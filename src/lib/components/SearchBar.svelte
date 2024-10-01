@@ -13,7 +13,7 @@
 	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
 		toggleLoading();
-		goto(`/search?query=${searchQuery}&filterBy=${filterBy || 'title'}`, {
+		goto(`/search?query=${searchQuery}&filterBy=${filterBy || 'title'}&page=${1}`, {
 			replaceState: true
 		});
 	};

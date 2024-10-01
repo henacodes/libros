@@ -1,4 +1,14 @@
 <script lang="ts">
+	// svelte core
+
+	// third party
+
+	// shadcdn components
+
+	// custom components
+
+	// custom types
+	// stores
 	import SearchBar from '$lib/components/SearchBar.svelte';
 </script>
 

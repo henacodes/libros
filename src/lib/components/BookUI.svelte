@@ -13,9 +13,6 @@
 	export let book: Book;
 	import * as Dialog from '$lib/components/ui/dialog';
 	import DownloadProgress from './DownloadProgress.svelte';
-	import { toggleLoading } from '$store/globalStore';
-
-	let defaultImage = 'https://library.lol/img/blank.png';
 
 	const handleDownload = async (book: Book) => {
 		try {
@@ -50,7 +47,7 @@
 			class="h-[full] w-full object-cover"
 		/> -->
 		<img
-			class=" h-[300px] w-full rounded-xl"
+			class=" h-[300px] w-full rounded-xl object-cover"
 			src={`${API_SERVER_URL}/proxy?url=${book.thumbUrl}`}
 			alt=""
 		/>
@@ -60,7 +57,8 @@
 			<p
 				class="text-blue-gray-900 block font-sans text-base font-medium leading-relaxed antialiased"
 			>
-				{book.title.replace(/\d{5,}/g, '')}
+				{book.title.replace(/\d{5,}/g, '').slice(0, 100)}
+				{book.title.replace(/\d{5,}/g, '').length > 100 && '....'}
 			</p>
 		</div>
 
@@ -69,7 +67,16 @@
 				class=" text-blue-gray-900 my-1 block font-sans text-base font-medium leading-relaxed antialiased"
 			>
 				<span class=" font-bold">Authors :</span>
-				<small>{book.authors || NOT_AVAILABLE}</small>
+
+				{#if book.authors.length}
+					<small
+						>{book.authors.length > 100
+							? `${book.authors.slice(0, 100)} ....`
+							: book.authors}</small
+					>
+				{:else}
+					<small>{book.authors.length || NOT_AVAILABLE}</small>
+				{/if}
 			</p>
 			<p class="flex items-center">
 				<CalendarDays size={20} /> <span class=" mx-1">{book.year || NOT_AVAILABLE}</span>
