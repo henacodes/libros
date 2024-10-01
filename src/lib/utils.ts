@@ -2,6 +2,9 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
+import type Book from './types/Book';
+import type { BookDownload } from './types/Book';
+import { DOWNLOAD_HISTORY } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -55,13 +58,24 @@ export const flyAndScale = (
 	};
 };
 
-export const downloadBlob = (blob: Blob, bookName: string, format: string) => {
+export const downloadBlob = (blob: Blob, downloadedBook: BookDownload) => {
+	const { title, extension } = downloadedBook;
 	const url = window.URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	a.style.display = 'none';
 	a.href = url;
-	a.download = `${bookName}.${format}`; // Specify the filename
+	a.download = `${title}.${extension}`; // Specify the filename
 	document.body.appendChild(a);
 	a.click();
 	window.URL.revokeObjectURL(url); // Clean up
+
+	let prevStorage = localStorage.getItem(DOWNLOAD_HISTORY);
+	let downloads: Book[] = [];
+
+	if (prevStorage !== '' && prevStorage !== null) {
+		downloads = JSON.parse(prevStorage);
+	}
+
+	downloads.push(downloadedBook);
+	localStorage.setItem(DOWNLOAD_HISTORY, JSON.stringify(downloads));
 };

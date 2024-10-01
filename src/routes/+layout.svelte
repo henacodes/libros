@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	// svelte core
 
 	// third party
@@ -15,6 +15,21 @@
 
 	// stores
 	import globalStore from '../store/globalStore';
+	import { onMount } from 'svelte';
+	import { DOWNLOAD_HISTORY } from '$lib/constants';
+	import { addDownloadHistory } from '$store/downloadStore';
+	import type { BookDownload } from '$lib/types/Book';
+
+	onMount(() => {
+		if (window) {
+			let storage = localStorage.getItem(DOWNLOAD_HISTORY);
+			if (storage !== '' || storage !== null) {
+				let downloads = JSON.parse(storage!) as BookDownload[];
+
+				addDownloadHistory(downloads);
+			}
+		}
+	});
 </script>
 
 <ModeWatcher />

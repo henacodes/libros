@@ -4,11 +4,15 @@ import type Book from '$lib/types/Book';
 
 const downloadStore = writable({ downloads: [] } as { downloads: BookDownload[] });
 
+export const addDownloadHistory = (books: BookDownload[]) => {
+	downloadStore.update((curr) => ({ ...curr, downloads: [...curr.downloads, ...books] }));
+};
+
 export const addDownload = (book: Book) => {
 	let newDownload: BookDownload = { ...book, loaded: 0, total: 0 };
 	downloadStore.update((curr) => ({
 		...curr,
-		downloads: [...curr.downloads, newDownload]
+		downloads: [newDownload, ...curr.downloads]
 	}));
 };
 

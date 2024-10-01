@@ -4,7 +4,7 @@
 	import Button from './ui/button/button.svelte';
 	import { CalendarDays } from 'lucide-svelte';
 	import { API_SERVER_URL, NOT_AVAILABLE } from '$lib/constants';
-	import { addDownload, updateDownloadStatus } from '../../store/downloadStore';
+	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	import axios, { type AxiosProgressEvent } from 'axios';
 	import { toast } from 'svelte-sonner';
 	import { downloadBlob } from '$lib/utils';
@@ -29,7 +29,7 @@
 			if (res) {
 				let blob = res.data;
 				toast('Book downloaded successfully :)');
-				downloadBlob(blob, book.title, book.extension);
+				downloadBlob(blob, $downloadStore.downloads.filter((b) => b.id === book.id)[0]);
 			}
 		} catch (error) {
 			console.log(error);

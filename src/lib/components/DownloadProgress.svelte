@@ -16,7 +16,7 @@
 	{#each $downloadStore.downloads as download}
 		<div>
 			<p class=" my-2 font-bold">{download.title.replace(/\d{5,}/g, '')}</p>
-			<p class=" my-2">{download.authors}</p>
+			<p class=" my-2 text-slate-400">{download.authors}</p>
 			{#if download.total === 0}
 				<Badge variant="outline">
 					<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
