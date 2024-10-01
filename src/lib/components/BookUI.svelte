@@ -1,16 +1,25 @@
 <script lang="ts">
+	// shadcdn components
 	import type Book from '$lib/types/Book';
-
 	import Button from './ui/button/button.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+
+	// third-party
 	import { CalendarDays } from 'lucide-svelte';
-	import { API_SERVER_URL, NOT_AVAILABLE } from '$lib/constants';
-	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	import axios, { type AxiosProgressEvent } from 'axios';
 	import { toast } from 'svelte-sonner';
-	import { downloadBlob } from '$lib/utils';
-	export let book: Book;
-	import * as Dialog from '$lib/components/ui/dialog';
+
+	//custom components
 	import DownloadProgress from './DownloadProgress.svelte';
+
+	// misc
+	import { API_SERVER_URL, NOT_AVAILABLE } from '$lib/constants';
+	import { downloadBlob } from '$lib/utils';
+
+	// stores
+	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
+
+	export let book: Book;
 
 	const handleDownload = async (book: Book) => {
 		try {

@@ -25,6 +25,7 @@
 	import globalStore, { toggleLoading } from '../../store/globalStore';
 	import BookSkeleton from '$lib/components/BookSkeleton.svelte';
 	import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data;
 
@@ -34,6 +35,7 @@
 	let totalPages: number;
 	let currentPage: number;
 	let filterBy: string;
+	let error: string;
 	$: {
 		if (data) {
 			searchResults = data.searchResults;
@@ -41,7 +43,10 @@
 			filterBy = data.filterBy!;
 			totalPages = data.totalPages || 0;
 			currentPage = parseInt(data.currentPage || '') || 1;
-
+			if (data.error) {
+				error = data.error;
+				toast(error);
+			}
 			// this is usefull to stop loading after searching on the search page itself
 			// which is here
 			toggleLoading(false);
@@ -62,7 +67,7 @@
 	});
 </script>
 
-<div class=" w-full p-5 lg:px-[5rem]">
+<div class=" h-full w-full p-5 lg:px-[5rem]">
 	<div class=" flex items-center justify-between">
 		<div class="flex items-center">
 			<a href="/"
@@ -80,8 +85,10 @@
 	</div>
 	<SearchBar />
 	{#if searchResults.length == 0 && !$globalStore.loading}
-		<p class=" m-4 text-2xl">Looks like we got no books for this search</p>
-	{:else if searchResults.length == 0}{/if}
+		<div class=" h-full w-full">
+			<p class=" m-4 text-center text-3xl">Looks like we got no books for this search</p>
+		</div>
+	{/if}
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
 		{#each searchResults as book, i (i)}
 			<BookUI {book} />
@@ -97,43 +104,45 @@
 		{/if}
 	</div>
 	<div class=" ">
-		<Pagination.Root
-			class="my-5    "
-			count={totalPages * 25}
-			perPage={25}
-			let:pages
-			let:currentPage
-		>
-			<Pagination.Content class="flex flex-col items-center   sm:flex-row">
-				<Pagination.Item>
-					{#if currentPage}
-						<Pagination.PrevButton on:click={() => preceedToPage(currentPage - 1)} />
-					{/if}
-				</Pagination.Item>
-				{#each pages as page (page.key)}
-					{#if page.type === 'ellipsis'}
-						<Pagination.Item>
-							<Pagination.Ellipsis />
-						</Pagination.Item>
-					{:else}
-						<Pagination.Item isVisible={currentPage == page.value}>
-							<Pagination.Link
-								on:click={() => preceedToPage(page.value)}
-								{page}
-								isActive={currentPage == page.value}
-							>
-								{page.value}
-							</Pagination.Link>
-						</Pagination.Item>
-					{/if}
-				{/each}
-				<Pagination.Item>
-					{#if currentPage}
-						<Pagination.NextButton on:click={() => preceedToPage(currentPage + 1)} />
-					{/if}
-				</Pagination.Item>
-			</Pagination.Content>
-		</Pagination.Root>
+		{#if totalPages && searchResults}
+			<Pagination.Root
+				class="my-5    "
+				count={totalPages * 25}
+				perPage={25}
+				let:pages
+				let:currentPage
+			>
+				<Pagination.Content class="flex flex-col items-center   sm:flex-row">
+					<Pagination.Item>
+						{#if currentPage}
+							<Pagination.PrevButton on:click={() => preceedToPage(currentPage - 1)} />
+						{/if}
+					</Pagination.Item>
+					{#each pages as page (page.key)}
+						{#if page.type === 'ellipsis'}
+							<Pagination.Item>
+								<Pagination.Ellipsis />
+							</Pagination.Item>
+						{:else}
+							<Pagination.Item isVisible={currentPage == page.value}>
+								<Pagination.Link
+									on:click={() => preceedToPage(page.value)}
+									{page}
+									isActive={currentPage == page.value}
+								>
+									{page.value}
+								</Pagination.Link>
+							</Pagination.Item>
+						{/if}
+					{/each}
+					<Pagination.Item>
+						{#if currentPage}
+							<Pagination.NextButton on:click={() => preceedToPage(currentPage + 1)} />
+						{/if}
+					</Pagination.Item>
+				</Pagination.Content>
+			</Pagination.Root>
+		{/if}
 	</div>
 </div>
 
