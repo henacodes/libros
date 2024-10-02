@@ -27,6 +27,8 @@
 			return;
 		}
 		toggleLoading();
+		searchResults = [];
+
 		goto(`/search?query=${searchQuery}&filterBy=${filterBy || 'title'}&page=${1}`, {
 			replaceState: true
 		});

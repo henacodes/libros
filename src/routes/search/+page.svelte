@@ -56,9 +56,7 @@
 	const preceedToPage = (pageNumber: number) => {
 		searchResults = [];
 		toggleLoading();
-		goto(`/search?query=${query}&filterBy=${filterBy || 'title'}&page=${pageNumber}`, {
-			replaceState: true
-		});
+		goto(`/search?query=${query}&filterBy=${filterBy || 'title'}&page=${pageNumber}`);
 		currentPage = pageNumber;
 	};
 
