@@ -7,11 +7,17 @@
 	import * as Select from '$lib/components/ui/select';
 
 	import { toggleLoading } from '$store/globalStore';
+	import { toast } from 'svelte-sonner';
 
 	let searchQuery = '';
 	let filterBy: string;
 	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
+
+		if (!searchQuery) {
+			toast('You need to enter something to search');
+			return;
+		}
 		toggleLoading();
 		goto(`/search?query=${searchQuery}&filterBy=${filterBy || 'title'}&page=${1}`, {
 			replaceState: true
@@ -21,7 +27,7 @@
 	let options = ['title', 'author', 'series', 'publisher', 'identifier', 'tags'];
 </script>
 
-<div class="flex w-full items-center justify-center">
+<div class="my-4 flex w-full items-center justify-center">
 	<form class="m-2 flex w-full items-center space-x-2 md:w-1/2" on:submit={handleSubmit}>
 		<Select.Root
 			onSelectedChange={(option) => {

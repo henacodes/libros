@@ -24,6 +24,7 @@
 	const handleDownload = async (book: Book) => {
 		try {
 			addDownload(book);
+			console.log('selected book', book);
 			const res = await axios.post(`${API_SERVER_URL}/books/download`, book, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
@@ -47,7 +48,7 @@
 </script>
 
 <div
-	class="  bg-background relative flex flex-col rounded-xl bg-clip-border text-gray-700 shadow-lg outline outline-1"
+	class="  relative flex flex-col rounded-xl bg-background bg-clip-border text-gray-700 shadow-lg outline outline-1"
 >
 	<div class="relative mx-4 mt-4 text-gray-700">
 		<!-- 	<img
@@ -63,7 +64,7 @@
 	</div>
 	<div class="  p-6 md:h-52">
 		<div class="mb-2 flex items-center justify-between">
-			<p class=" text-primary block font-sans text-base font-bold leading-relaxed antialiased">
+			<p class=" block font-sans text-base font-bold leading-relaxed text-primary antialiased">
 				{book.title.replace(/\d{5,}/g, '').slice(0, 100)}
 				{book.title.replace(/\d{5,}/g, '').length > 100 ? '....' : ''}
 			</p>
