@@ -52,7 +52,7 @@
 >
 	<div class="relative mx-4 mt-4 text-gray-700">
 		<img
-			class=" h-[300px] w-full rounded-xl"
+			class=" h-[300px] w-full rounded-xl object-cover"
 			src={`${API_SERVER_URL}/proxy?url=${book.thumbUrl}`}
 			alt=""
 		/>
