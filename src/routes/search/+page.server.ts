@@ -18,6 +18,7 @@ export const load = async ({ url, fetch }) => {
 		currentPage,
 		searchResults: serverResponse.data.searchResults,
 		filterBy,
-		totalPages: serverResponse.data.totalPages
+		totalPages: serverResponse.data.totalPages,
+		error: serverResponse.error
 	};
 };

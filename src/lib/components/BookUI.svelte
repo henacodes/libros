@@ -1,20 +1,30 @@
 <script lang="ts">
+	// shadcdn components
 	import type Book from '$lib/types/Book';
-
 	import Button from './ui/button/button.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+
+	// third-party
 	import { CalendarDays } from 'lucide-svelte';
-	import { API_SERVER_URL, NOT_AVAILABLE } from '$lib/constants';
-	import { addDownload, updateDownloadStatus } from '../../store/downloadStore';
 	import axios, { type AxiosProgressEvent } from 'axios';
 	import { toast } from 'svelte-sonner';
-	import { downloadBlob } from '$lib/utils';
-	export let book: Book;
-	import * as Dialog from '$lib/components/ui/dialog';
+
+	//custom components
 	import DownloadProgress from './DownloadProgress.svelte';
+
+	// misc
+	import { API_SERVER_URL, NOT_AVAILABLE } from '$lib/constants';
+	import { downloadBlob } from '$lib/utils';
+
+	// stores
+	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
+
+	export let book: Book;
 
 	const handleDownload = async (book: Book) => {
 		try {
 			addDownload(book);
+			console.log('selected book', book);
 			const res = await axios.post(`${API_SERVER_URL}/books/download`, book, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
@@ -29,7 +39,7 @@
 			if (res) {
 				let blob = res.data;
 				toast('Book downloaded successfully :)');
-				downloadBlob(blob, book.title, book.extension);
+				downloadBlob(blob, $downloadStore.downloads.filter((b) => b.id === book.id)[0]);
 			}
 		} catch (error) {
 			console.log(error);
@@ -38,14 +48,9 @@
 </script>
 
 <div
-	class="  bg-background relative flex flex-col rounded-xl bg-clip-border text-gray-700 shadow-lg outline outline-1"
+	class="  relative flex flex-col rounded-xl bg-background bg-clip-border text-gray-700 shadow-lg outline outline-1"
 >
 	<div class="relative mx-4 mt-4 text-gray-700">
-		<!-- 	<img
-			src={`${API_SERVER_URL}/proxy?url=${thumbUrl || defaultImage}`}
-			alt="card-image"
-			class="h-[full] w-full object-cover"
-		/> -->
 		<img
 			class=" h-[300px] w-full rounded-xl object-cover"
 			src={`${API_SERVER_URL}/proxy?url=${book.thumbUrl}`}
@@ -54,7 +59,7 @@
 	</div>
 	<div class="  p-6 md:h-52">
 		<div class="mb-2 flex items-center justify-between">
-			<p class=" text-primary block font-sans text-base font-bold leading-relaxed antialiased">
+			<p class=" block font-sans text-base font-bold leading-relaxed text-primary antialiased">
 				{book.title.replace(/\d{5,}/g, '').slice(0, 100)}
 				{book.title.replace(/\d{5,}/g, '').length > 100 ? '....' : ''}
 			</p>
