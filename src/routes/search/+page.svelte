@@ -83,7 +83,7 @@
 			<Badge>{query}</Badge>
 		</p>
 	</div>
-	<SearchBar />
+	<SearchBar onSubmit={() => (searchResults = [])} />
 	{#if searchResults.length == 0 && !$globalStore.loading}
 		<div class=" h-full w-full">
 			<p class=" m-4 text-center text-3xl">Looks like we got no books for this search</p>

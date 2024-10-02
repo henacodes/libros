@@ -11,11 +11,19 @@
 
 	let searchQuery = '';
 	let filterBy: string;
+
+	type OnSubmitType = () => void;
+
+	export let onSubmit: OnSubmitType | null = null;
 	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
 
-		if (!searchQuery) {
-			toast('You need to enter something to search');
+		if (onSubmit) {
+			onSubmit();
+		}
+
+		if (!searchQuery || searchQuery.length < 3) {
+			toast('Invalid input ');
 			return;
 		}
 		toggleLoading();
