@@ -23,10 +23,12 @@
 	onMount(() => {
 		if (window) {
 			let storage = localStorage.getItem(DOWNLOAD_HISTORY);
-			if (storage !== '' || storage !== null) {
-				let downloads = JSON.parse(storage!) as BookDownload[];
+			if (storage !== '' && storage !== null) {
+				let downloads = JSON.parse(storage!);
 
-				addDownloadHistory(downloads);
+				if (Array.isArray(downloads)) {
+					addDownloadHistory(downloads);
+				}
 			}
 		}
 	});

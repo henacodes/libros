@@ -26,6 +26,7 @@
 	import BookSkeleton from '$lib/components/BookSkeleton.svelte';
 	import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
 	import { toast } from 'svelte-sonner';
+	import Paginator from '$lib/components/Paginator.svelte';
 
 	export let data;
 
@@ -52,13 +53,6 @@
 			toggleLoading(false);
 		}
 	}
-
-	const preceedToPage = (pageNumber: number) => {
-		searchResults = [];
-		toggleLoading();
-		goto(`/search?query=${query}&filterBy=${filterBy || 'title'}&page=${pageNumber}`);
-		currentPage = pageNumber;
-	};
 
 	onMount(() => {
 		toggleLoading(false);
@@ -103,43 +97,14 @@
 	</div>
 	<div class=" ">
 		{#if totalPages && searchResults}
-			<Pagination.Root
-				class="my-5    "
-				count={totalPages * 25}
+			<Paginator
+				{totalPages}
+				{currentPage}
 				perPage={25}
-				let:pages
-				let:currentPage
-			>
-				<Pagination.Content class="flex flex-col items-center   sm:flex-row">
-					<Pagination.Item>
-						{#if currentPage}
-							<Pagination.PrevButton on:click={() => preceedToPage(currentPage - 1)} />
-						{/if}
-					</Pagination.Item>
-					{#each pages as page (page.key)}
-						{#if page.type === 'ellipsis'}
-							<Pagination.Item>
-								<Pagination.Ellipsis />
-							</Pagination.Item>
-						{:else}
-							<Pagination.Item isVisible={currentPage == page.value}>
-								<Pagination.Link
-									on:click={() => preceedToPage(page.value)}
-									{page}
-									isActive={currentPage == page.value}
-								>
-									{page.value}
-								</Pagination.Link>
-							</Pagination.Item>
-						{/if}
-					{/each}
-					<Pagination.Item>
-						{#if currentPage}
-							<Pagination.NextButton on:click={() => preceedToPage(currentPage + 1)} />
-						{/if}
-					</Pagination.Item>
-				</Pagination.Content>
-			</Pagination.Root>
+				{query}
+				{filterBy}
+				onPreceed={() => (searchResults = [])}
+			/>
 		{/if}
 	</div>
 </div>
