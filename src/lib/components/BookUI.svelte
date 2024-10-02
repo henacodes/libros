@@ -51,13 +51,8 @@
 	class="  relative flex flex-col rounded-xl bg-background bg-clip-border text-gray-700 shadow-lg outline outline-1"
 >
 	<div class="relative mx-4 mt-4 text-gray-700">
-		<!-- 	<img
-			src={`${API_SERVER_URL}/proxy?url=${thumbUrl || defaultImage}`}
-			alt="card-image"
-			class="h-[full] w-full object-cover"
-		/> -->
 		<img
-			class=" h-[300px] w-full rounded-xl object-cover"
+			class=" h-[300px] w-full rounded-xl"
 			src={`${API_SERVER_URL}/proxy?url=${book.thumbUrl}`}
 			alt=""
 		/>
