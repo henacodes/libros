@@ -18,6 +18,7 @@
 
 	// stores
 	import downloadStore, { addDownload, updateDownloadStatus } from '../../store/downloadStore';
+	import { onMount } from 'svelte';
 
 	export let book: Book;
 
@@ -45,6 +46,36 @@
 			console.log(error);
 		}
 	};
+
+	function delay(ms: number) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	// Optional: random delay between 200ms and 2000ms
+	function randomDelay(min = 200, max = 2000) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	onMount(() => {
+		const fetchThumbUrl = async () => {
+			if (book.mirror) {
+				// Wait for a random amount of time
+				await delay(randomDelay(300, 4000));
+
+				try {
+					const res = await axios.get(`${API_SERVER_URL}/books/thumb?mirror=${book.mirror}`);
+					console.log(res);
+					if (res.data) {
+						book.thumbUrl = res.data.url;
+					}
+				} catch (error) {
+					console.log(`for book ${book.title} Error fetching thumbnail URL:`, error);
+				}
+			}
+		};
+
+		fetchThumbUrl();
+	});
 </script>
 
 <div
@@ -53,7 +84,7 @@
 	<div class="relative mx-4 mt-4 text-gray-700">
 		<img
 			class=" h-[300px] w-full rounded-xl object-cover"
-			src={`${API_SERVER_URL}/proxy?url=${book.thumbUrl}`}
+			src={book.thumbUrl ? `${API_SERVER_URL}/proxy?url=${book.thumbUrl}` : "/no_cover.png"}
 			alt=""
 		/>
 	</div>
