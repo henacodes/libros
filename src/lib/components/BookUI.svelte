@@ -23,10 +23,13 @@
 	export let book: Book;
 
 	const handleDownload = async (book: Book) => {
+		console.log("boooooook",book)
+		const m = book.mirror.match(/[?&]md5=([a-fA-F0-9]{32})\b/);
+		const md5 = m ? m[1] : null;
 		try {
 			addDownload(book);
 			console.log('selected book', book);
-			const res = await axios.post(`${API_SERVER_URL}/books/download`, book, {
+			const res = await axios.get(`${API_SERVER_URL}/books/dwn?md5=${md5}`, {
 				responseType: 'blob', // Set response type to blob
 				onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
 					// this function gets called everytime the file gets updated with a new stream
@@ -61,7 +64,7 @@
 			if (book.mirror) {
 				// Wait for a random amount of time
 				await delay(randomDelay(300, 4000));
-
+/* 
 				try {
 					const res = await axios.get(`${API_SERVER_URL}/books/thumb?mirror=${book.mirror}`);
 					console.log(res);
@@ -70,7 +73,7 @@
 					}
 				} catch (error) {
 					console.log(`for book ${book.title} Error fetching thumbnail URL:`, error);
-				}
+				} */
 			}
 		};
 
